@@ -42,6 +42,7 @@ exports.config = {
 
         // Override the timeout for webdriver.
         browser.driver.manage().timeouts().implicitlyWait(10000);
+        browser.driver.manage().window().maximize();
 
         jasmine.getEnv().addReporter(new HtmlReporter({
             baseDirectory: 'reports',
