@@ -1,0 +1,23 @@
+{
+	"name": "ProtractorTest",
+	"version": "0.0.1",
+	"description": "ProtractorTest",
+	"main": "app.js",
+	"author": {
+		"name": "Shartul Kumar",
+		"email": ""
+	},
+	"devDependencies": {
+		"jasmine-reporters": "~2.0.0",
+		"protractor": "~5.3.2",
+		"protractor-html-screenshot-reporter": "~0.0.21",
+		"protractor-beautiful-reporter": "~1.2.1",
+		"winston": "~1.0.1",
+		"selenium-webdriver": "^2.47.1",
+		"nodemailer": "~4.6.6"
+	},
+	"dependencies": {
+		"path": "^0.12.7",
+		"promise": "^7.0.4"
+	}
+}

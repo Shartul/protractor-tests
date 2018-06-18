@@ -1,0 +1,45 @@
+{
+
+  "testsiteurl":"https://cdt-gateway.ase-nonprod.enterprisenet.org/cdt/ui/",
+
+  "locators":{
+
+    "homepage":{
+
+      "buttontext":"Customer",
+      "ngclickbutton":"manager()"
+
+
+    },
+    "addcustomerdetailspage":{
+
+      "addcustomerbutton":"addCust()",
+      "fName":"fName",
+      "lName":"lName",
+      "pCode":"postCd",
+      "addcustomer":"button.btn.btn-default",
+      "openAccount":"addCust()",
+
+      "testdata":{
+
+
+        "fName":"",
+        "lName":"",
+        "pCode":""
+
+
+      }
+
+
+    }
+
+
+
+  }
+
+
+
+
+
+
+}
