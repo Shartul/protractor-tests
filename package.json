@@ -8,15 +8,24 @@
 		"email": ""
 	},
 	"devDependencies": {
+		"gulp": "~3.9.1",
+		"gulp-protractor": "~4.1.0",
+		"istanbul-combine": "~0.3.0",
+		"run-sequence": "~2.2.1",
+		"gulp-task-listing": "~1.0.1",
+		"jasmine-spec-reporter": "^2.4.0",
 		"jasmine-reporters": "~2.0.0",
 		"protractor": "~5.3.2",
 		"protractor-html-screenshot-reporter": "~0.0.21",
 		"protractor-beautiful-reporter": "~1.2.1",
 		"winston": "~1.0.1",
 		"selenium-webdriver": "^2.47.1",
-		"nodemailer": "~4.6.6"
+		"zip-folder": "~1.0.0",
+		"protractor-helper": "~3.2.9"
+
 	},
 	"dependencies": {
+		"protractor": "~5.3.2",
 		"path": "^0.12.7",
 		"promise": "^7.0.4"
 	}
