@@ -1,0 +1,4 @@
+.idea
+.gradle
+*.log
+node_modules/
