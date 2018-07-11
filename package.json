@@ -1,32 +1,44 @@
 {
 	"name": "ProtractorTest",
 	"version": "0.0.1",
-	"description": "ProtractorTest",
+	"description": "Webdriver E2E Protractor Tests for CDT",
 	"main": "app.js",
+	"keywords": [
+		"angular",
+		"test",
+		"testing",
+		"webdriver",
+		"webdriverjs",
+		"selenium"
+	],
 	"author": {
 		"name": "Shartul Kumar",
-		"email": ""
+		"email": "shartul.kumar.consultant@nielsen.com"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://kush8004@adlm.nielsen.com/bitbucket/scm/bionqa/cdt.git"
+	},
+	"license": "Apache-2.0",
 	"devDependencies": {
 		"gulp": "~3.9.1",
 		"gulp-protractor": "~4.1.0",
+		"gulp-task-listing": "~1.1.0",
 		"istanbul-combine": "~0.3.0",
-		"run-sequence": "~2.2.1",
-		"gulp-task-listing": "~1.0.1",
-		"jasmine-spec-reporter": "^2.4.0",
 		"jasmine-reporters": "~2.0.0",
-		"protractor": "~5.3.2",
-		"protractor-html-screenshot-reporter": "~0.0.21",
+		"jasmine-spec-reporter": "~4.2.1",
+		"protractor": "^5.3.2",
 		"protractor-beautiful-reporter": "~1.2.1",
-		"winston": "~1.0.1",
-		"selenium-webdriver": "^2.47.1",
+		"protractor-helper": "~3.3.4",
+		"protractor-html-screenshot-reporter": "~0.0.21",
+		"run-sequence": "~2.2.1",
+		"selenium-webdriver": "^2.53.3",
+		"winston": "~2.4.3",
 		"zip-folder": "~1.0.0",
-		"protractor-helper": "~3.2.9"
-
+		"protractor-retry": "~1.2.0"
 	},
 	"dependencies": {
-		"protractor": "~5.3.2",
 		"path": "^0.12.7",
-		"promise": "^7.0.4"
+		"promise": "^8.0.1"
 	}
 }
