@@ -1,9 +1,11 @@
 var HtmlReporter = require('protractor-beautiful-reporter');
 var zipFolder = require('zip-folder');
+var retry = require('protractor-retry').retry;
+var NUMBER_OF_RETRIES = '5';
 
 exports.config = {
 
-     //directConnect: true,   // Browser automation on IE does not run with directConnect as true
+    //directConnect: true,   // Browser automation on IE does not run with directConnect as true
 
     // Capabilities to be passed to the webdriver instance.
     multiCapabilities: [
@@ -32,8 +34,12 @@ exports.config = {
         defaultTimeoutInterval: 30000
     },
 
-    onPrepare: function () {
+    onCleanUp: function (results) {
+        retry.onCleanUp(results);
 
+    },
+    onPrepare: function () {
+        retry.onPrepare();
         browser.ignoreSynchronization = true;
 
         // Override the timeout for webdriver.
@@ -50,7 +56,11 @@ exports.config = {
             gatherBrowserLogs: true,
         }).getJasmine2Reporter())
     },
+    afterLaunch: function() {
+        return retry.afterLaunch(NUMBER_OF_RETRIES);
+    },
     onComplete: function () {
+
         zipFolder('reports', 'reports.zip', function (err) {
             if (err) {
                 console.log('oh no!', err);
@@ -59,4 +69,5 @@ exports.config = {
             }
         });
     }
+
 };
