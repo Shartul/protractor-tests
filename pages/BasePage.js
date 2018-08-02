@@ -1,7 +1,12 @@
 
 var BasePage = function() {
 
-    this.url = 'http://answersdev.nielsen.com/cdt/ui';
+    this.url = 'http://answersdev.nielsen.com/';
+
+    this.at = function() {
+        return browser.wait(this.pageLoaded(), this.timeout.xl);
+    };
+
 
     this.getPageTitle = function () {
         return browser.getTitle();
@@ -16,6 +21,10 @@ var BasePage = function() {
         element.clear();
         element.sendKeys(value);
         browser.sleep(500);
+    };
+
+    this.click = function (element) {
+        element.click();
     };
 
     this.getTextFromInput = function (element) {
@@ -215,5 +224,33 @@ var BasePage = function() {
             end = new Date().getTime();
         }
     };
+    this.waitUntilDisplayed = function (elm) {
+        return browser.wait(function () {
+            return elm.isPresent().then(function (itsThere) {
+                if (itsThere)
+                    return elm.isDisplayed().then(function () {
+                        return true;
+                    }, function () {
+                        return false;
+                    });
+                else
+                    return false;
+            }, function () {
+                return false;
+            })
+        });
+    };
+    this.acceptAlert = function(){
+        browser.switchTo().alert().then(
+            function (alert) {
+                alert.accept();
+            },
+            function (error) {
+                console.log(error);
+            }
+        );
+    };
+
+
 }
 module.exports = new BasePage();
