@@ -20,24 +20,33 @@
 		"url": "https://kush8004@adlm.nielsen.com/bitbucket/scm/bionqa/cdt.git"
 	},
 	"license": "Apache-2.0",
+	"scripts": {
+		"api_tests": "jasmine-node test_spec/restAPITest_spec.js"
+	},
 	"devDependencies": {
+		"frisby": "^2.1.0",
 		"gulp": "~3.9.1",
 		"gulp-protractor": "~4.1.0",
 		"gulp-task-listing": "~1.1.0",
 		"istanbul-combine": "~0.3.0",
+		"jasmine-node": "^1.15.0",
 		"jasmine-reporters": "~2.0.0",
 		"jasmine-spec-reporter": "~4.2.1",
+		"jasmine2-tagged": "^1.1.0",
+		"junit-viewer": "^4.11.1",
 		"protractor": "^5.3.2",
 		"protractor-beautiful-reporter": "~1.2.1",
 		"protractor-helper": "~3.3.4",
 		"protractor-html-screenshot-reporter": "~0.0.21",
+		"protractor-retry": "~1.2.0",
 		"run-sequence": "~2.2.1",
 		"selenium-webdriver": "^2.53.3",
 		"winston": "~2.4.3",
-		"zip-folder": "~1.0.0",
-		"protractor-retry": "~1.2.0"
+		"zip-folder": "~1.0.0"
 	},
 	"dependencies": {
+		"g": "^2.0.1",
+		"node-uuid": "^1.4.8",
 		"path": "^0.12.7",
 		"promise": "^8.0.1"
 	}
