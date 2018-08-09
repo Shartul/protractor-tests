@@ -60,7 +60,7 @@ describe("CDT Navigation Bar Test", function() {
             break;
             }
         } var cardname = JSONReader.result[j].name;
-          homePage.clickatCard(cardname);
+          homePage.clickatUnlockCard(cardname);
         console.log("The locked card name is" + cardname);
         expect(editTreePage.pageLoaded()).toBeTruthy();
     });
