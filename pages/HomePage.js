@@ -13,7 +13,6 @@ HomePage = function () {
         return cards.getText();
     };
     this.clickatUnlockCard= function (tileText) {
-        //Select all date elements and apply filter function
         element.all(by.css('span.tileHeader')).filter(function (elem) {
             return elem.getText().then(function (text) {
                 return text === tileText;
