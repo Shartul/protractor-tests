@@ -15,14 +15,14 @@ describe("CDT Navigation Bar Test", function() {
     /*CDT-1: IE 11 popup and Chrome new tab navigation to CDT from answers dev portal site*/
     it("Validate navigation to CDT Home Page", function () {
         loginPage.to();
-      //  expect(loginPage.getPageTitle()).toEqual('Nielsen Answers Login');
+        expect(loginPage.getLoginPageTitle()).toEqual('Nielsen Answers Login');
         loginPage.loginAs(userData.testUser);
         loginPage.selectCDT();
         browser.sleep(10000);
         browser.isInternetExplorer = function () {
             loginPage.loginAs(userData.testUser);
         };
-        //expect(homePage.getPageTitle()).toEqual('Consumer Decision Tree');
+        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
     });
     /*CDT-3: Validate tha Cards are displayed and count is verified */
     it("Validate the Card names on CDT Home Page", function () {
@@ -62,8 +62,40 @@ describe("CDT Navigation Bar Test", function() {
         } var cardname = JSONReader.result[j].name;
           homePage.clickatUnlockCard(cardname);
         console.log("The locked card name is" + cardname);
-        expect(editTreePage.pageLoaded()).toBeTruthy();
+        expect(editTreePage.getEditTreePageTitle()).toEqual(cardname);
     });
 
+    /*CDT-5: Check the card name to reflect multiple categories with modifiedOn and updatedby*/
+    it("Validate that card name to reflect multiple categories", function () {
+        homePage.cards().then(function (text1) {
+            homePage.cardcontent().then(function (text2) {
+                homePage.modifieddate().then(function (text3) {
+                    homePage.updateByName().then(function (text4) {
+                        for (var i = 0; i < text1.length; i++) {
+                            console.log(+ "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|"+ "|"+
+                                "|" +   + "|" + "The Tree Name:----"     + text1[i] + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "DateModified on:----"   + text3[i] + "|" +"UpdateBy:----"+text4[i]+"|" +"|"+
+                                "|" +   + "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "MultipleCategories----"  +text2[i] + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|" +"|"+
+                                "|" +   + "|" + "|" + "|" + "|" + "|" + "|" + "|"   + "|" + "|" + "|" + "|" + "|" + "|" );
+                        }
+                        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+                    });
+                });
+            });
+        });
+    });
+    /*CDT-5: Card names with Unclassified Product number are verfied */
+    it("Validate that card name with unclassified names are displayed", function () {
+        for (var j = 0; j < JSONReader.result.length; j++) {
+            if (JSONReader.result[j].numberOfUnclassifiedProducts != null)
+                console.log("The Tree with Unclassified Products are" +JSONReader.result[j].name + "Unclassified count is " + JSONReader.result[j].numberOfUnclassifiedProducts);
+        }
+    });expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+
 });
-           //
+
+
