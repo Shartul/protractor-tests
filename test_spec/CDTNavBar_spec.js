@@ -1,11 +1,12 @@
-var loginPage = require('../pages/LoginPage');
-var homePage = require('../pages/HomePage');
-var editTreePage = require('../pages/EditTreePage');
-var OR = require('../elements/OR.json');
-var logger = require('../utils/log.js');
-//var locator = require("../elements/uniqueLocator.js");
-var userData = require('../utils/userData');
-var JSONReader = require('../treeMetaData.json');
+    var loginPage = require('../pages/LoginPage');
+    var homePage = require('../pages/HomePage');
+    var editTreePage = require('../pages/EditTreePage');
+    var OR = require('../elements/OR.json');
+    var logger = require('../utils/log.js');
+    //var locator = require("../elements/uniqueLocator.js");
+    var userData = require('../utils/userData');
+    var JSONReader = require('../treeMetaData.json');
+
 
 
 describe("CDT Navigation Bar Test", function() {
@@ -57,10 +58,10 @@ describe("CDT Navigation Bar Test", function() {
     it("Validate that user can open the unlocked tree", function () {
         for (var j = 0; j < JSONReader.result.length; j++) {
             if (JSONReader.result[j].lockedByEmail === null) {
-            break;
+                break;
             }
         } var cardname = JSONReader.result[j].name;
-          homePage.clickatUnlockCard(cardname);
+        homePage.clickatUnlockCard(cardname);
         console.log("The locked card name is" + cardname);
         expect(editTreePage.getEditTreePageTitle()).toEqual(cardname);
     });
@@ -94,8 +95,15 @@ describe("CDT Navigation Bar Test", function() {
             if (JSONReader.result[j].numberOfUnclassifiedProducts != null)
                 console.log("The Tree with Unclassified Products are" +JSONReader.result[j].name + "Unclassified count is " + JSONReader.result[j].numberOfUnclassifiedProducts);
         }
-    });expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
-
+        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+    });
+    /*CDT-6: Each Tree on Home page has Kebab Menu with Copy Rename and Delete options*/
+    it("Validate that kebab menu is displayed", function () {
+        homePage.clickatKebabMenu();
+        console.log("The Kebab Menu is clicked and open");
+        //expect(homePage.copy()).toContain('copy');
+        //expect(homePage.del()).toContain('delete');
+        //expect(homePage.rename()).toContain('rename');
+        //expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+    });
 });
-
-
