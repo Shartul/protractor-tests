@@ -2,7 +2,13 @@
 var basePage = require('../pages/BasePage');
 var JSONReader = require('../treeMetaData.json');
 
+
 HomePage = function () {
+
+        var copy = element(by.xpath("//span[text()='copy']"));
+        var del = element(by.xpath("//span[text()='delete']"));
+        var rename  =   element(by.xpath("//span[text()='copy']"));
+
 
     this.getHomePageTitle = function () {
         return browser.getTitle();
@@ -73,6 +79,17 @@ HomePage = function () {
         this.hitEnter();
         browser.wait(this.isVisible(this.searchResultsPage), this.timeout.l);
         };
+
+    this.clickatKebabMenu = function () {
+        element.all(by.css('nd-icon-button')).then(function (elements) {
+            for(var i = 0; i<elements.length;i++) {
+                browser.sleep(20000);
+                browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
+                elements[i].click();
+                browser.sleep(20000);
+            }
+        });
+    };
 };
 HomePage.prototype = basePage; //extending base page
 
