@@ -5,14 +5,16 @@ var JSONReader = require('../treeMetaData.json');
 
 HomePage = function () {
 
-        var copy = element(by.xpath("//span[text()='copy']"));
-        var del = element(by.xpath("//span[text()='delete']"));
-        var rename  =   element(by.xpath("//span[text()='copy']"));
-
-
     this.getHomePageTitle = function () {
         return browser.getTitle();
     };
+   /* this.navigationBar =  function(){
+        browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('searchInput').click()");
+        var help = browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('help').click()");
+        var apps = document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('apps');
+        var alerts = document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('alerts');
+
+    };*/
 
     this.cards = function () {
         var cards = element.all(by.css('span.tileHeader'));
@@ -28,64 +30,58 @@ HomePage = function () {
             browser.executeScript("arguments[0].scrollIntoView();", filteredElements[0]);
             filteredElements[0].click();
             browser.sleep(50000);
+            if(expect(browser.getCurrentUrl()).toContain("/edittree/")){
+                console.log("The tree is opened by the user")
+            }else {
+                console.log("The tree is locked by other user")
+            }
         });
     };
-    this.searchlockedCard = function (text) {
+    this.copytheLockedCard = function() {
         for (var j = 0; j < JSONReader.result.length; j++) {
-            if (JSONReader.result[j].lockedByEmail = 'null') {
-                var elements = element.all(by.css('span.tileHeader'));
-                for (var k = 0; j < elements.length; k++) {
-                    if (JSONReader.result[j].name.isEqual(elements[k].getText())) {
-                        browser.sleep(10000);
-                        browser.refresh();
-                        browser.sleep(5000);
-                        var lockedstatus = JSONReader.result[j].name;
-                    }
-                }
-
+            if (JSONReader.result[j].lockedByEmail != null) {
+                break;
             }
-
         }
-        return lockedstatus;
-
+        console.log("The locked card name is " +JSONReader.result[j].name);
+        browser.sleep(3000);
+        element.all(by.css('span.tileHeader')).get(j).element.all(by.css('nd-icon-button')).get(j).click();
+        browser.sleep(3000);
+        element(by.css('.copy')).click();
+        console.log("Name of copied tree is " + "Copy Of" + JSONReader.result[j].name)
     };
-    this.cardcontent = function() {
+    this.cardcontent = function () {
         var cardcontent = element.all(by.css('span.tileContentText'));
-            return cardcontent.getText();
+        return cardcontent.getText();
     };
-
-    this.modifieddate = function() {
+    this.modifieddate = function () {
         var modifieddate = element.all(by.css('span.updateDate'));
         return modifieddate.getText();
     };
-
-    this.updateByName = function() {
+    this.updateByName = function () {
         var updateByName = element.all(by.css('span.updateBy'));
         return updateByName.getText();
     };
-
-    this.unclassifiedcount = function() {
+    this.unclassifiedcount = function () {
         var unclassifiedcount = element.all(by.css('span.unClassifiedCount'));
         return unclassifiedcount.getText();
     };
-
-    this.unclassified = function() {
+    this.unclassified = function () {
         var unclassified = element.all(by.css('div.unClassifiedContentDiv'));
         return unclassified.getText();
     };
-
     this.searchFor = function (text) {
         this.searchBox.sendKeys(text);
         this.hitEnter();
         browser.wait(this.isVisible(this.searchResultsPage), this.timeout.l);
-        };
-
+    };
     this.clickatKebabMenu = function () {
         element.all(by.css('nd-icon-button')).then(function (elements) {
-            for(var i = 0; i<elements.length;i++) {
+            for (var i = 0; i < elements.length; i++) {
                 browser.sleep(20000);
                 browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
                 elements[i].click();
+                element(by.css('.rename')).click();
                 browser.sleep(20000);
             }
         });
