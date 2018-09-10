@@ -1,11 +1,11 @@
-    var loginPage = require('../pages/LoginPage');
-    var homePage = require('../pages/HomePage');
-    var editTreePage = require('../pages/EditTreePage');
-    var OR = require('../elements/OR.json');
-    var logger = require('../utils/log.js');
-    //var locator = require("../elements/uniqueLocator.js");
-    var userData = require('../utils/userData');
-    var JSONReader = require('../treeMetaData.json');
+var loginPage = require('../pages/LoginPage');
+var homePage = require('../pages/HomePage');
+var editTreePage = require('../pages/EditTreePage');
+var OR = require('../elements/OR.json');
+var logger = require('../utils/log.js');
+//var locator = require("../elements/uniqueLocator.js");
+var userData = require('../utils/userData');
+var JSONReader = require('../treeMetaData.json');
 
 
 
@@ -25,6 +25,16 @@ describe("CDT Navigation Bar Test", function() {
         };
         expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
     });
+
+
+    /*CDT-8: Validation for Tree Navigation Bar*/
+   /* it("Validate that Name of the application and its logo is displayed", function () {
+        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+        console.log("Name of the application is displayed");
+        homePage.navigationBar();
+
+    });*/
+
     /*CDT-3: Validate tha Cards are displayed and count is verified */
     it("Validate the Card names on CDT Home Page", function () {
         homePage.cards().then(function (text) {
@@ -53,8 +63,7 @@ describe("CDT Navigation Bar Test", function() {
             logger.log('info', 'Card names are sorted on CDT Home Page');
         });
     });
-    /*CDT-4: Check the unlocked card name from REST response and  then
-    use it to click and verify that card is locked */
+    /*CDT-4: Check the unlocked card name from API response and then use it to click and verify that card is locked */
     it("Validate that user can open the unlocked tree", function () {
         for (var j = 0; j < JSONReader.result.length; j++) {
             if (JSONReader.result[j].lockedByEmail === null) {
@@ -101,9 +110,5 @@ describe("CDT Navigation Bar Test", function() {
     it("Validate that kebab menu is displayed", function () {
         homePage.clickatKebabMenu();
         console.log("The Kebab Menu is clicked and open");
-        //expect(homePage.copy()).toContain('copy');
-        //expect(homePage.del()).toContain('delete');
-        //expect(homePage.rename()).toContain('rename');
-        //expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
     });
 });
