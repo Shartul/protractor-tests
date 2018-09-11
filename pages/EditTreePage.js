@@ -44,16 +44,9 @@ var EditTreePage =  function () {
     };
     this.clicktoExpandAll = function () {
         element(by.css("[icon='nlsn:expand']")).click();
-        browser.sleep(2000);
-        //browser.actions().mouseMove(element).perform();
-        //browser.actions().sendKeys(protractor.Key.DOWN).perform();
-        //browser.executeScript('window.scrollBy(0,500);');
-        // browser.executeScript("arguments[0].scrollIntoView();", "document.querySelector('nd-brand-bar').querySelector('app-product-hierarchy-component').querySelector('#name5b92d721a1281e42b480875d')");
-        //browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
-        //browser.sleep(3000);
+        browser.sleep(3000);
     };
     this.clicktoCollapseAll = function () {
-        //browser.executeScript('window.scrollTo(0,500)');
         element(by.css("[icon='nlsn:collapse']")).click();
     };
 
@@ -151,9 +144,45 @@ var EditTreePage =  function () {
                 element.all(by.css('.delete')).get(i).click();
             }
         });
-
     };
+    this.scrolldown = function () {
+        element(by.css("[icon='nlsn:expand']")).click();
+        browser.sleep(3000);
+        element.all(by.css('.productName')).then(function (ele) {
+            for (var i = 0; i < ele.length; i++) {
+                browser.executeScript("arguments[0].scrollIntoView()", ele[i]);
+                browser.sleep(3000);
+            }
+        });
+    };
+    this.noProductmessage =  function () {
+        var noprod = element(by.css('.noProdText'));
+            return noprod.getText();
+    };
+
+    this.selectnodemessage =  function(){
+        var selectnode =element(by.css('.infoText'));
+            return selectnode.getText();
+    };
+    this.selectanothernode =  function(){
+        browser.sleep(2000);
+        element.all(by.css('.productName')).get(0).click();
+        browser.sleep(3000);
+        var selectanothernode =  element.all(by.css('.noProductsContent')).get(0);
+            return selectanothernode.getText();
+    };
+    this.validateMove =  function(){
+        browser.sleep(2000);
+        return browser.executeScript("return document.querySelector('.headerSection').querySelector('.buttonDiv').querySelectorAll('nd-button')[0].innerText");
+    };
+    this.validDeclassify = function(){
+        browser.sleep(2000);
+        return browser.executeScript("return document.querySelector('.headerSection').querySelector('.buttonDiv').querySelectorAll('nd-button')[1].innerText");
+    };
+
+
 };
+
 EditTreePage.prototype = basePage; //extending base page
 
 module.exports = new EditTreePage();
