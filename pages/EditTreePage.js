@@ -50,21 +50,18 @@ var EditTreePage =  function () {
         element(by.css("[icon='nlsn:collapse']")).click();
     };
 
-    this.clickatCL1 = function () {
-        element.all(by.css('div#productNameContainer')).then(function (elem) {
+    this.clickatfirstLevel = function () {
+        element.all(by.css('#productNameContainer')).then(function (elem) {
+            browser.sleep(2000);
             browser.executeScript("arguments[0].scrollIntoView()", elem[0]);
             elem[0].click();
-            browser.sleep(30000);
         });
     };
 
     this.clickatChangeKPI = function () {
         element(by.css("[icon='nlsn:edit_fill']")).click();
     };
-    this.showAllunderBranch = function () {
-        var showallunderbranch = element(by.css("span.showAllText"));
-        return showallunderbranch.getText();
-    };
+
     this.selecthighlevelunitcheckbox = function () {
         browser.executeScript("document.querySelector('.textDiv').querySelector('input').click()");
     };
@@ -155,34 +152,54 @@ var EditTreePage =  function () {
             }
         });
     };
-    this.noProductmessage =  function () {
+    this.noProductmessage = function () {
         var noprod = element(by.css('.noProdText'));
-            return noprod.getText();
+        return noprod.getText();
     };
 
-    this.selectnodemessage =  function(){
-        var selectnode =element(by.css('.infoText'));
-            return selectnode.getText();
+    this.selectnodemessage = function () {
+        var selectnode = element(by.css('.infoText'));
+        return selectnode.getText();
     };
-    this.selectanothernode =  function(){
+    this.selectanothernode = function () {
         browser.sleep(2000);
         element.all(by.css('.productName')).get(0).click();
         browser.sleep(3000);
-        var selectanothernode =  element.all(by.css('.noProductsContent')).get(0);
-            return selectanothernode.getText();
+        var selectanothernode = element.all(by.css('.noProductsContent')).get(0);
+        return selectanothernode.getText();
     };
-    this.validateMove =  function(){
+    this.validateMove = function () {
         browser.sleep(2000);
         return browser.executeScript("return document.querySelector('.headerSection').querySelector('.buttonDiv').querySelectorAll('nd-button')[0].innerText");
     };
-    this.validDeclassify = function(){
+    this.validDeclassify = function () {
         browser.sleep(2000);
         return browser.executeScript("return document.querySelector('.headerSection').querySelector('.buttonDiv').querySelectorAll('nd-button')[1].innerText");
     };
+    this.showAllunderBranch = function () {
+        var showallunderbranch = element(by.css(".showAllText"));
+        return showallunderbranch.getText();
+    };
 
+    this.selectshowAllunderBranch = function () {
+        browser.executeScript("document.querySelector('nd-checkbox').shadowRoot.getElementById('checkbox').click()");
+    };
 
+    this.selectKPI = function() {
+        //return browser.executeScript("document.querySelector('nd-dropdown-menu').shadowRoot.getElementById('menuButton').click()");
+        browser.sleep(2000);
+        browser.executeScript("document.querySelector('nd-item.iron-selected').click()");
+    };
+    this.selectlistofMetrics = function() {
+        browser.sleep(2000);
+        for (var i = 10; i < 18; i++) {
+            browser.executeScript("document.querySelectorAll('nd-item')[" + i + "].click()");
+                        browser.actions().mouseMove(element(by.css('.fullHeight.shareDiv.class2.whiteBorder'))).perform();
+                        //.executeScript("arguments[0].scrollIntoView()",);
+                        browser.sleep(3000);
+                }
+            };
 };
-
 EditTreePage.prototype = basePage; //extending base page
 
 module.exports = new EditTreePage();

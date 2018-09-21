@@ -35,6 +35,12 @@ describe("Edit Tree page validations", function() {
         homePage.clickatUnlockCard(cardname);
         console.log("The card is opened by the user " + userData.testUser.username);
         browser.sleep(5000);
+        editTreePage.getEditTreePageTitle().then(function(text){
+            console.log(text);
+            expect(text).toEqual(cardname.toUpperCase());
+        });
+        browser.sleep(3000);
+      /*  browser.sleep(5000);
          browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('profile').click()");
          browser.sleep(2000);
          browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.querySelector('nd-userprofile-drawer').shadowRoot.getElementById('signOut').click()");
@@ -52,53 +58,53 @@ describe("Edit Tree page validations", function() {
          console.log('info', 'Locked status of the card is verified');
          hompePage.copytheLockedCard();
          browser.sleep(3000);
-         console.log('info', 'The locked card is copied');
+         console.log('info', 'The locked card is copied');*/
     });
-     /*CDT-11:Validate that shopper product hierarchy  is visible to 30 down layer*/
-     it("Validate that user can open the unlocked tree", function () {
-         for (var j = 0; j < JSONReader.result.length; j++) {
-             if (JSONReader.result[j].lockedByEmail === null) {
-                 break;
-             }
-         } var cardname = JSONReader.result[j].name;
-         homePage.clickatUnlockCard(cardname);
-         browser.sleep(5000);
-         editTreePage.getEditTreePageTitle().then(function(text){
-             console.log(text);
-             expect(text).toEqual(cardname.toUpperCase());
-         });
-         browser.sleep(3000);
-         editTreePage.clicktoExpandAll();
-         browser.sleep(3000);
-         editTreePage.clicktoCollapseAll();
-         browser.sleep(3000);
+    /*CDT-11:Validate that shopper product hierarchy  is visible to 30 down layer*/
+    it("Validate that user can open the unlocked tree", function () {
+        for (var j = 0; j < JSONReader.result.length; j++) {
+            if (JSONReader.result[j].lockedByEmail === null) {
+                break;
+            }
+        } var cardname = JSONReader.result[j].name;
+        homePage.clickatUnlockCard(cardname);
+        browser.sleep(5000);
+        editTreePage.getEditTreePageTitle().then(function(text){
+            console.log(text);
+            expect(text).toEqual(cardname.toUpperCase());
+        });
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        browser.sleep(3000);
+        editTreePage.clicktoCollapseAll();
+        browser.sleep(3000);
 
-     });
-     /*CDT-11:how many products are attached to each level of tree.*/
-     it("Validate that user can see how many products are attached to each level of tree.",function () {
-         editTreePage.clicktoExpandAll();
-         editTreePage.hierarchy();
-             editTreePage.getEditTreePageTitle().then(function(text){
-                 console.log(text);
-                 expect(text).toEqual(cardname.toUpperCase());
-             });
-             console.log("user can see how many products are attached to each level of tree");
-         editTreePage.clicktoCollapseAll();
-     });
-     /*CDT-12:User can rename each level of hierarchy.*/
-     it("Validate that user can see how many products are attached to each level of tree.",function () {
-         editTreePage.clicktoExpandAll();
-         editTreePage.clickandRename();
-         console.log("user can rename each level of the hierarchy");
-         editTreePage.clicktoCollapseAll();
+    });
+    /*CDT-11:how many products are attached to each level of tree.*/
+    it("Validate that user can see how many products are attached to each level of tree.",function () {
+        editTreePage.clicktoExpandAll();
+        editTreePage.hierarchy();
+        editTreePage.getEditTreePageTitle().then(function(text){
+            console.log(text);
+            expect(text).toEqual(cardname.toUpperCase());
+        });
+        console.log("user can see how many products are attached to each level of tree");
+        editTreePage.clicktoCollapseAll();
+    });
+    /*CDT-12:User can rename each level of hierarchy.*/
+    it("Validate that user can see how many products are attached to each level of tree.",function () {
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickandRename();
+        console.log("user can rename each level of the hierarchy");
+        editTreePage.clicktoCollapseAll();
 
-     });
-     /*CDT-12:User can search any level of hierarchy.*/
-     it("Validate that user can search any level of hierarchy.", function () {
-         editTreePage.clicktoExpandAll();
-         editTreePage.searchhierarchy();
-         console.log("user can search each level of the hierarchy.");
-     });
+    });
+    /*CDT-12:User can search any level of hierarchy.*/
+    it("Validate that user can search any level of hierarchy.", function () {
+        editTreePage.clicktoExpandAll();
+        editTreePage.searchhierarchy();
+        console.log("user can search each level of the hierarchy.");
+    });
     /*CDT-13:User can do changes such as add child,sibling,select need higher unit and delete the hierarchy level.*/
     it("Validate that user can do changes on the hierarchy level.",function () {
         editTreePage.clicktoExpandAll();
@@ -142,6 +148,22 @@ describe("Edit Tree page validations", function() {
                 '          Select \'Show all under branch\' to view all products in this node.\n' +
                 '        ');
         });
+    });
+
+    /*CDT-15:Validate that user can view products metrics*/
+    it("Validate that user can view products metrics", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickatfirstLevel();
+        editTreePage.showAllunderBranch().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('Show all under branch');
+        });
+        editTreePage.selectshowAllunderBranch();
+        editTreePage.selectKPI();
+        editTreePage.selectlistofMetrics();
+        console.log("user can view products metrics");
+
     });
 
 });
