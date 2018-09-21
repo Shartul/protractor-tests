@@ -185,20 +185,33 @@ var EditTreePage =  function () {
         browser.executeScript("document.querySelector('nd-checkbox').shadowRoot.getElementById('checkbox').click()");
     };
 
-    this.selectKPI = function() {
+    this.selectKPI = function () {
         //return browser.executeScript("document.querySelector('nd-dropdown-menu').shadowRoot.getElementById('menuButton').click()");
         browser.sleep(2000);
         browser.executeScript("document.querySelector('nd-item.iron-selected').click()");
     };
-    this.selectlistofMetrics = function() {
+    this.selectlistofMetrics = function () {
         browser.sleep(2000);
         for (var i = 10; i < 18; i++) {
             browser.executeScript("document.querySelectorAll('nd-item')[" + i + "].click()");
-                        browser.actions().mouseMove(element(by.css('.fullHeight.shareDiv.class2.whiteBorder'))).perform();
-                        //.executeScript("arguments[0].scrollIntoView()",);
-                        browser.sleep(3000);
-                }
-            };
+            browser.actions().mouseMove(element(by.css('.fullHeight.shareDiv.class2.whiteBorder'))).perform();
+            //.executeScript("arguments[0].scrollIntoView()",);
+            browser.sleep(3000);
+        }
+    };
+    this.unclassifiedData = function () {
+        element(by.css('#unclassified')).click();
+        browser.sleep(3000);
+        element.all(by.css('.productNameClass')).then(function (ele) {
+            for (var i = 0; i < ele.length; i++) {
+                browser.executeScript("arguments[0].scrollIntoView();", ele[ele.length - 10]);
+                browser.sleep(3000);
+            }
+        });
+    };
+
+
+
 };
 EditTreePage.prototype = basePage; //extending base page
 

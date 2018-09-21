@@ -40,7 +40,7 @@ describe("Edit Tree page validations", function() {
             expect(text).toEqual(cardname.toUpperCase());
         });
         browser.sleep(3000);
-      /*  browser.sleep(5000);
+        browser.sleep(5000);
          browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('profile').click()");
          browser.sleep(2000);
          browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.querySelector('nd-userprofile-drawer').shadowRoot.getElementById('signOut').click()");
@@ -58,7 +58,7 @@ describe("Edit Tree page validations", function() {
          console.log('info', 'Locked status of the card is verified');
          hompePage.copytheLockedCard();
          browser.sleep(3000);
-         console.log('info', 'The locked card is copied');*/
+         console.log('info', 'The locked card is copied');
     });
     /*CDT-11:Validate that shopper product hierarchy  is visible to 30 down layer*/
     it("Validate that user can open the unlocked tree", function () {
@@ -163,6 +163,18 @@ describe("Edit Tree page validations", function() {
         editTreePage.selectKPI();
         editTreePage.selectlistofMetrics();
         console.log("user can view products metrics");
+
+    });
+    /*CDT-16:Validate that user can view unclassified products*/
+    it("Validate that user can view products metrics", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.validateMove().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('MOVE');
+        });
+        editTreePage.unclassifiedData();
+        console.log("user can view products in unclassified products tabs");
 
     });
 
