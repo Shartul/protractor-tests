@@ -10,9 +10,17 @@ var EditTreePage =  function () {
     this.backNavigation = function () {
         browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.getElementById('brandBarLight').shadowRoot.getElementById('ndToolbar').querySelector('#backNavigation').click()");
     };
-    this.appIcon = function () {
-        browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.getElementById('brandBarLight').shadowRoot.getElementById('ndToolbar').querySelector('#appIcon').click()");
+
+
+    this.edittab =  function(){
+        var edittab = element(by.css('.editTab'));
+        return edittab.getText();
     };
+    this.visualizetab =  function(){
+        var visualizetab = element(by.css('.visualizeTab'));
+        return edittab.getText();
+    };
+
 
     this.hierarchy = function () {
         element.all(by.css('#productNameContainer')).then(function (elements) {
@@ -60,6 +68,12 @@ var EditTreePage =  function () {
 
     this.clickatChangeKPI = function () {
         element(by.css("[icon='nlsn:edit_fill']")).click();
+        browser.sleep(2000);
+        for(var i=0; i<6;i++){
+            browser.executeScript("document.querySelector('.productFilterContainer').querySelectorAll('nd-item')[" + i + "].click()");
+            browser.sleep(3000);
+        }
+
     };
 
     this.selecthighlevelunitcheckbox = function () {
@@ -88,7 +102,7 @@ var EditTreePage =  function () {
     };
     this.clickandRename = function () {
         element.all(by.css('nd-icon-button')).then(function (elements) {
-            for (var i = 0; i < 5; i++) {
+            for (var i = 1; i < 2; i++) {
                 browser.sleep(20000);
                 browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
                 elements[i].click();
@@ -108,17 +122,17 @@ var EditTreePage =  function () {
             }
         });
     };
-    this.selectaKPI = function () {
+   /* this.selectaKPI = function () {
         browser.executeScript("document.querySelector('.productTableSection').querySelector('nd-dropdown-menu').click()");
         var kpiitems = document.querySelector('.productTableSection').querySelectorAll('nd-item');
         for (var i = 0; i < kpiitems; i++) {
             browser.executeScript("document.querySelector('.productTableSection').querySelectorAll('nd-item')[" + i + "]".click());
         }
-    };
+    };*/
 
     this.hierarchychanges = function () {
         element.all(by.css('nd-icon-button')).then(function (elements) {
-            for (var i = 1; i < 7; i++) {
+            for (var i = 1; i < 2; i++) {
                 browser.sleep(3000);
                 browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
                 elements[i].click();
@@ -184,12 +198,25 @@ var EditTreePage =  function () {
     this.selectshowAllunderBranch = function () {
         browser.executeScript("document.querySelector('nd-checkbox').shadowRoot.getElementById('checkbox').click()");
     };
-
-    this.selectKPI = function () {
-        //return browser.executeScript("document.querySelector('nd-dropdown-menu').shadowRoot.getElementById('menuButton').click()");
+    this.KPISText =  function (){
         browser.sleep(2000);
-        browser.executeScript("document.querySelector('nd-item.iron-selected').click()");
+        return browser.executeScript("return document.querySelector('nd-item.iron-selected').innerText");
     };
+    this.selectKPI = function () {
+        browser.sleep(2000);
+        browser.executeScript("return document.querySelector('nd-item.iron-selected').click()");
+    };
+
+    this.ProductName =  function (){
+        var productName = element.all(by.css('.productNameClass')).get(0);
+        return  productName.getText();
+    };
+    this.hierrarchy =  function (){
+      var hierrarchy =  element(by.css('.tableCellDiv.hierarchyHeaderDiv'));
+      return hierrarchy.getText();
+
+    };
+
     this.selectlistofMetrics = function () {
         browser.sleep(2000);
         for (var i = 10; i < 18; i++) {
@@ -209,6 +236,81 @@ var EditTreePage =  function () {
             }
         });
     };
+    this.save =  function() {
+        browser.sleep(3000);
+        element(by.css('.saveButton')).click();
+    };
+    this.saveFromList= function() {
+        browser.sleep(3000);
+        element(by.css('.saveIcon')).click();
+        browser.executeScript("document.querySelectorAll('nd-item')[0].click()");
+
+    };
+    this.saveandclose = function (){
+        browser.sleep(3000);
+        element(by.css('.saveIcon')).click();
+        browser.executeScript("document.querySelectorAll('nd-item')[1].click()");
+
+    };
+
+    this.searchProduct =  function(){
+        browser.sleep(5000);
+        element.all(by.css('.searchIcon')).get(0).click();
+        browser.sleep(5000);
+        element(by.css('.nameSearch')).sendKeys("Bar");
+        browser.sleep(5000);
+        element.all(by.css('.sortIconDiv')).get(0).click();
+        browser.sleep(5000);
+        element.all(by.css('.sortIconDiv')).get(0).click();
+    };
+
+    this.undoChanges =  function () {
+        element.all(by.css('nd-icon-button')).then(function (elements) {
+            for (var i = 1; i < 2; i++) {
+                browser.sleep(20000);
+                browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
+                elements[i].click();
+                browser.sleep(3000);
+                element.all(by.css('.rename')).get(i).click();
+                browser.sleep(2000);
+                element(by.css(".renameInput")).sendKeys(protractor.Key.BACK_SPACE);
+                element(by.css(".renameInput")).sendKeys(protractor.Key.BACK_SPACE);
+                element(by.css(".renameInput")).sendKeys(protractor.Key.BACK_SPACE);
+                browser.sleep(5000);
+                var errortext = element(by.css(".errorText")).getText();
+                expect(errortext).toEqual('Must contain atleast 1 alpha character');
+                element(by.css(".renameInput")).sendKeys("CL" + [i]);
+                browser.sleep(2000);
+                element(by.css("[icon='nlsn:toast_done']")).click();
+                browser.sleep(2000);
+            }
+        });
+        element.all(by.css('.productName')).then(function () {
+            for (var i = 0; i < element.length; i++) {
+                if (element(by.css('.productName')).get(i).getText() === "Child of CL" + [i]) {
+                    browser.sleep(3000);
+                    browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
+                    element.all(by.css('nd-icon-button')).get(i).click();
+                    element.all(by.css('.delete')).get(i).click();
+                    browser.sleep(5000);
+                }
+            }
+        });
+        element.all(by.css('.productName')).then(function () {
+            for (var i = 0; i < element.length; i++) {
+                if (element(by.css('.productName')).get(i).getText() === "Sibling of CL" + [i]) {
+                    browser.sleep(3000);
+                    browser.executeScript("arguments[0].scrollIntoView();", elements[i]);
+                    element.all(by.css('nd-icon-button')).get(i).click();
+                    element.all(by.css('.delete')).get(i).click();
+                    browser.sleep(5000);
+                }
+            }
+        });
+    };
+
+
+
 
 
 

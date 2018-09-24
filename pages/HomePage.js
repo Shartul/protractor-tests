@@ -5,17 +5,39 @@ var JSONReader = require('../treeMetaData.json');
 
 HomePage = function () {
 
+
     this.getHomePageTitle = function () {
-        return browser.getTitle();
+        return browser.executeScript("return document.querySelector('nd-brand-bar').shadowRoot.getElementById('brandBarLight').shadowRoot.getElementById('ndToolbar').querySelector('#pageTitle').innerText");
+    };
+    this.appIcon = function () {
+        return browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.getElementById('brandBarLight').shadowRoot.getElementById('ndToolbar').querySelector('#appIcon')");
+    };
+    this.searchBox = function () {
+        return  browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('searchInput').click()");
+    };
+
+    this.helpMenu =  function(){
+        browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('help').click();")
     };
    /* this.navigationBar =  function(){
-        browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('searchInput').click()");
-        var help = browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('help').click()");
+               var help =
         var apps = document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('apps');
         var alerts = document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('alerts');
 
     };*/
-
+    this.enterSearch = function (){
+       element(by.css('#searchInput')).sendKeys('Sample');
+       browser.sleep(3000);
+    };
+    this.openProfile =  function(){
+        browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('profile').click()");
+    };
+    this.logOut =  function(){
+        browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.querySelector('nd-userprofile-drawer').shadowRoot.getElementById('signOut').click()");
+    };
+    this.profileName =  function(){
+      return browser.executeScript("return document.querySelector('nd-brand-bar').shadowRoot.querySelector('nd-userprofile-drawer').shadowRoot.getElementById('profileHeader').innerText");
+    };
     this.cards = function () {
         var cards = element.all(by.css('span.tileHeader'));
         return cards.getText();
@@ -70,11 +92,11 @@ HomePage = function () {
         var unclassified = element.all(by.css('div.unClassifiedContentDiv'));
         return unclassified.getText();
     };
-    this.searchFor = function (text) {
+   /* this.searchFor = function (text) {
         this.searchBox.sendKeys(text);
         this.hitEnter();
         browser.wait(this.isVisible(this.searchResultsPage), this.timeout.l);
-    };
+    };*/
     this.clickatKebabMenu = function () {
         element.all(by.css('nd-icon-button')).then(function (elements) {
             for (var i = 0; i < elements.length; i++) {

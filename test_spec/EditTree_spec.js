@@ -15,6 +15,7 @@ describe("Edit Tree page validations", function() {
         browser.ignoreSynchronization = true;
     });
     /*CDT-7:Validate that someone else could not modify the tree locked by other user */
+    /*CDT-35:Validate that user can view profile with initials and option to logout */
     it("Validate that other user cannot access the locked tree", function () {
         loginPage.to();
         expect(loginPage.getPageTitle()).toEqual('Nielsen Answers Login');
@@ -41,25 +42,30 @@ describe("Edit Tree page validations", function() {
         });
         browser.sleep(3000);
         browser.sleep(5000);
-         browser.executeScript("document.getElementsByTagName('nd-brand-bar')[0].shadowRoot.getElementById('profile').click()");
-         browser.sleep(2000);
-         browser.executeScript("document.querySelector('nd-brand-bar').shadowRoot.querySelector('nd-userprofile-drawer').shadowRoot.getElementById('signOut').click()");
-         browser.sleep(5000);
-         loginPage.loginAs(userData.lockedUser);
-         loginPage.selectCDT();
-         browser.sleep(5000);
-         browser.isInternetExplorer = function () {
+        browser.sleep(2000);
+        homePage.openProfile();
+        homePage.profileName().then()(function(text){
+            console.log(text);
+            expect(text).toEqual('Shartul Kumar')
+        });
+        homePage.logOut();
+        browser.sleep(5000);
+        loginPage.loginAs(userData.lockedUser);
+        loginPage.selectCDT();
+        browser.sleep(5000);
+        browser.isInternetExplorer = function () {
              loginPage.loginAs(userData.lockedUser);
 
          };
-         homePage.clickatUnlockCard(cardname);
-         console.log("The locked card is accessed by the user " + userData.lockedUser.username);
-         browser.sleep(3000);
-         console.log('info', 'Locked status of the card is verified');
-         hompePage.copytheLockedCard();
-         browser.sleep(3000);
-         console.log('info', 'The locked card is copied');
+        homePage.clickatUnlockCard(cardname);
+        console.log("The locked card is accessed by the user " + userData.lockedUser.username);
+        browser.sleep(3000);
+        console.log('info', 'Locked status of the card is verified');
+        hompePage.copytheLockedCard();
+        browser.sleep(3000);
+        console.log('info', 'The locked card is copied');
     });
+
     /*CDT-11:Validate that shopper product hierarchy  is visible to 30 down layer*/
     it("Validate that user can open the unlocked tree", function () {
         for (var j = 0; j < JSONReader.result.length; j++) {
@@ -81,8 +87,18 @@ describe("Edit Tree page validations", function() {
 
     });
     /*CDT-11:how many products are attached to each level of tree.*/
+    /*CDT-90:view a list of products not sold and show Product Name and Code, sort them and view Move */
+    /*CDT-44:  View  tabs "Edit" and "Visualize"*/
     it("Validate that user can see how many products are attached to each level of tree.",function () {
         editTreePage.clicktoExpandAll();
+        editTreePage.edittab().then(function(text){
+            console.log(text);
+            expect(text).toEqual('Edit');
+        });
+        editTreePage.visualizetab().then(function(text){
+            console.log(text);
+            expect(text).toEqual('Visualize');
+        });
         editTreePage.hierarchy();
         editTreePage.getEditTreePageTitle().then(function(text){
             console.log(text);
@@ -150,7 +166,8 @@ describe("Edit Tree page validations", function() {
         });
     });
 
-    /*CDT-15:Validate that user can view products metrics*/
+    /*CDT-15:Validate that user can view products metrics on RHS*/
+    /*CDT-99:Validate that user can select "Show all under branch" view "Product Name", "Hierarchy Level" and "KPIS" in this table  */
     it("Validate that user can view products metrics", function () {
         browser.sleep(3000);
         editTreePage.clicktoExpandAll();
@@ -160,10 +177,18 @@ describe("Edit Tree page validations", function() {
             expect(text).toEqual('Show all under branch');
         });
         editTreePage.selectshowAllunderBranch();
+        editTreePage.hierrarchy().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('Hierarchy Level');
+        });
+
+        editTreePage.KPISText().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('- Select a KPI -');
+        });
         editTreePage.selectKPI();
         editTreePage.selectlistofMetrics();
         console.log("user can view products metrics");
-
     });
     /*CDT-16:Validate that user can view unclassified products*/
     it("Validate that user can view products metrics", function () {
@@ -175,7 +200,44 @@ describe("Edit Tree page validations", function() {
         });
         editTreePage.unclassifiedData();
         console.log("user can view products in unclassified products tabs");
+    });
+    /*CDT-17:Validate that user can undo last saved changes to the hierarchy*/
+    it("Validate that user can undo last saved changes to the hierarchy", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickandRename();
+        editTreePage.hierarchychanges();
+        editTreePage.save();
+        editTreePage.undoChanges();
+        editTreePage.save();
+        console.log("user can undo changes from last save and thn save the changes agian");
 
+    });
+    /*CDT-42:Validate that user can Expand and Collapse and changeKPI " */
+    it("Validate that user can Expand and Collapse and changeKPI", function () {
+        browser.sleep(2000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickatChangeKPI();
+        console.log("User can Expand and Collapse and changeKPI");
+    });
+
+    /*CDT-43:Validate that user can filter/view only levels marked as "higher need unit" */
+    it("Validate that user ability filter/view only levels marked as higher need unit", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.selecthighlevelunitcheckbox();
+        browser.sleep(5000);
+        editTreePage.selecthighlevelunitcheckbox();
+        console.log("User can filter/view only levels marked as higher need unit");
+    });
+    /*CDT-100:Validate that user can search Product" */
+    it("Validate that user has ability to search Product", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickatfirstLevel();
+        editTreePage.selectshowAllunderBranch();
+        editTreePage.searchProduct();
+        console.log("User can search Product and sort them");
     });
 
 });

@@ -25,16 +25,22 @@ describe("CDT Navigation Bar Test", function() {
         };
         expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
     });
-
-
-    /*CDT-8: Validation for Tree Navigation Bar*/
-   /* it("Validate that Name of the application and its logo is displayed", function () {
-        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+    /*CDT-8:User view and access Standard Application Navigation Bar, search cards.*/
+    it("Validate that Name of the application and its logo is displayed", function () {
+        browser.sleep(5000);
+        homePage.getHomePageTitle().then(function(text){
+            console.log(text);
+            expect(text).toEqual('Consumer Decision Tree');
+        });
         console.log("Name of the application is displayed");
-        homePage.navigationBar();
-
-    });*/
-
+        expect(homePage.appIcon().isVisible()).toBeTruthy();
+        console.log("Logo of the application is displayed");
+        homePage.searchBox();
+        expect(element(by.css('#searchInput')).getAttribute('placeholder').getText()).toEqual('Enter your search criteria ( 3 characters min. )');
+        homePage.enterSearch();
+        homePage.helpMenu();
+        console.log('Name of the application and its logo is displayed');
+    });
     /*CDT-3: Validate tha Cards are displayed and count is verified */
     it("Validate the Card names on CDT Home Page", function () {
         homePage.cards().then(function (text) {
@@ -48,6 +54,7 @@ describe("CDT Navigation Bar Test", function() {
         });
     });
     /*CDT-3: Verify that Tree are visible in alphabetical order on Home Page*/
+    /*CDT-84: all the tiles are sorted by name without a difference between Capital name and other names*/
     it("Validate that Card names are sorted", function () {
         var sorted = [],
             unSorted = [];
@@ -76,6 +83,7 @@ describe("CDT Navigation Bar Test", function() {
     });
 
     /*CDT-5: Check the card name to reflect multiple categories with modifiedOn and updatedby*/
+    /*CDT-84:can see that "Modified date" and "Modified by" are horizontally aligned in each tile. */
     it("Validate that card name to reflect multiple categories", function () {
         homePage.cards().then(function (text1) {
             homePage.cardcontent().then(function (text2) {
@@ -107,8 +115,10 @@ describe("CDT Navigation Bar Test", function() {
         expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
     });
     /*CDT-6: Each Tree on Home page has Kebab Menu with Copy Rename and Delete options*/
+    /*CDT-84: can rename a tile and press enter to validate the new name.*/
     it("Validate that kebab menu is displayed", function () {
         homePage.clickatKebabMenu();
         console.log("The Kebab Menu is clicked and open");
     });
+
 });
