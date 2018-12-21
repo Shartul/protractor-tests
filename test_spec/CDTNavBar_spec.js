@@ -71,7 +71,9 @@ describe("CDT Navigation Bar Test", function() {
         });
     });
     /*CDT-4: Check the unlocked card name from API response and then use it to click and verify that card is locked */
+    /* CDT-153: Product and Hierarchy data should be copied when copying the tile data */
     it("Validate that user can open the unlocked tree", function () {
+        homePage.copytheUnlockedCard();
         for (var j = 0; j < JSONReader.result.length; j++) {
             if (JSONReader.result[j].lockedByEmail === null) {
                 break;
@@ -80,6 +82,7 @@ describe("CDT Navigation Bar Test", function() {
         homePage.clickatUnlockCard(cardname);
         console.log("The locked card name is" + cardname);
         expect(editTreePage.getEditTreePageTitle()).toEqual(cardname);
+
     });
 
     /*CDT-5: Check the card name to reflect multiple categories with modifiedOn and updatedby*/

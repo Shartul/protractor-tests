@@ -13,12 +13,8 @@ describe("Edit Tree page validations", function() {
 
     beforeEach(function () {
         browser.ignoreSynchronization = true;
-    });
-    /*CDT-7:Validate that someone else could not modify the tree locked by other user */
-    /*CDT-35:Validate that user can view profile with initials and option to logout */
-    it("Validate that other user cannot access the locked tree", function () {
         loginPage.to();
-        expect(loginPage.getPageTitle()).toEqual('Nielsen Answers Login');
+        expect(loginPage.getLoginPageTitle()).toEqual('Nielsen Answers Login');
         loginPage.loginAs(userData.testUser);
         loginPage.selectCDT();
         browser.sleep(5000);
@@ -26,7 +22,7 @@ describe("Edit Tree page validations", function() {
             loginPage.loginAs(userData.testUser);
 
         };
-        expect(homePage.getPageTitle()).toEqual('Consumer Decision Tree');
+        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
         for (var j = 0; j < JSONReader.result.length; j++) {
             if (JSONReader.result[j].lockedByEmail === null) {
                 break;
@@ -40,9 +36,13 @@ describe("Edit Tree page validations", function() {
             console.log(text);
             expect(text).toEqual(cardname.toUpperCase());
         });
-        browser.sleep(3000);
-        browser.sleep(5000);
-        browser.sleep(2000);
+        browser.sleep(7000);
+
+    });
+    /*CDT-7:Validate that someone else could not modify the tree locked by other user */
+    /*CDT-35:Validate that user can view profile with initials and option to logout */
+    /*CDT-31 32:Analyst - Viewing and Deleting the tree */
+    it("Validate that other user cannot access the locked tree", function () {
         homePage.openProfile();
         homePage.profileName().then()(function(text){
             console.log(text);
@@ -50,7 +50,7 @@ describe("Edit Tree page validations", function() {
         });
         homePage.logOut();
         browser.sleep(5000);
-        loginPage.loginAs(userData.lockedUser);
+        loginPage.loginAs(userData.lockedUser); //Now logged in as Analyst user
         loginPage.selectCDT();
         browser.sleep(5000);
         browser.isInternetExplorer = function () {
@@ -64,17 +64,17 @@ describe("Edit Tree page validations", function() {
         hompePage.copytheLockedCard();
         browser.sleep(3000);
         console.log('info', 'The locked card is copied');
+        homePage.deletheLockedCard();
+        browser.sleep(3000);
+        console.log('info', 'The copied card is deleted and can be viewed by Analyst user');
+        console.log('Analyst user can only view Restore option');
+        var tileStatus = 'DELETED';
+        homePage.clickatDeletedCard(tileStatus);
+        console.log('Analyst user CANNOT open DELETED Tree');
     });
 
     /*CDT-11:Validate that shopper product hierarchy  is visible to 30 down layer*/
     it("Validate that user can open the unlocked tree", function () {
-        for (var j = 0; j < JSONReader.result.length; j++) {
-            if (JSONReader.result[j].lockedByEmail === null) {
-                break;
-            }
-        } var cardname = JSONReader.result[j].name;
-        homePage.clickatUnlockCard(cardname);
-        browser.sleep(5000);
         editTreePage.getEditTreePageTitle().then(function(text){
             console.log(text);
             expect(text).toEqual(cardname.toUpperCase());
@@ -121,12 +121,58 @@ describe("Edit Tree page validations", function() {
         editTreePage.searchhierarchy();
         console.log("user can search each level of the hierarchy.");
     });
+    /* CDT-18 Saving the Tree - save, save & close, validate */
+    /*CDT130: Unlocking the tree */
     /*CDT-13:User can do changes such as add child,sibling,select need higher unit and delete the hierarchy level.*/
     it("Validate that user can do changes on the hierarchy level.",function () {
         editTreePage.clicktoExpandAll();
         editTreePage.hierarchychanges();
         console.log("User can add child and sibling at each hierarchy level and select higher need unit")
         console.log("User can delete each hierarchy level");
+        editTreePage.save();
+        editTreePage.saveFromList();
+        editTreePage.saveandclose();
+        browser.sleep(5000);
+        expect(homePage.getHomePageTitle()).toEqual('Consumer Decision Tree');
+
+    });
+    /* CDT-18 Saving the Tree - save, save & close, validate */
+    /* CDT-33 Analyst - Saving and Publishing the tree*/
+    it("Validate that user can do changes on the hierarchy level.",function () {
+        editTreePage.clicktoExpandAll();
+        editTreePage.doChanges();
+        editTreePage.closeafterchanges();
+        console.log("User can add child and sibling at each hierarchy level and select higher need unit")
+        console.log("User can delete each hierarchy level");
+        editTreePage.cancel();
+        editTreePage.closeafterchanges();
+        editTreePage.closeandDontSave();
+        for (var j = 0; j < JSONReader.result.length; j++) {
+            if (JSONReader.result[j].lockedByEmail === null) {
+                break;
+            }
+        }
+        var cardname = JSONReader.result[j].name;
+        homePage.clickatUnlockCard(cardname);
+        editTreePage.clicktoExpandAll();
+        editTreePage.doChanges();
+        editTreePage.closeafterchanges();
+        editTreePage.saveNClose();
+        for (j = 0; j < JSONReader.result.length; j++) {
+            if (JSONReader.result[j].lockedByEmail === null) {
+                break;
+            }
+        }
+        homePage.clickatUnlockCard(cardname);
+        editTreePage.selectPublish();   // assuming the Tree is in  Analysis state
+        for (j = 0; j < JSONReader.result.length; j++) {
+            if (JSONReader.result[j].lockedByEmail === null) {
+                break;
+            }
+        }
+        homePage.clickatUnlockCard(cardname);
+        editTreePage.selectValidate(); // assuming the Tree is Published by Analyst user
+
     });
     /*CDT-14:user can do scroll down on the hierarchy level*/
     it("Validate that user scroll down on the hierarchy level.", function () {
@@ -168,10 +214,11 @@ describe("Edit Tree page validations", function() {
 
     /*CDT-15:Validate that user can view products metrics on RHS*/
     /*CDT-99:Validate that user can select "Show all under branch" view "Product Name", "Hierarchy Level" and "KPIS" in this table  */
+    /*CDT-147:Local currency - Select a KPI, Total Sales */
     it("Validate that user can view products metrics", function () {
         browser.sleep(3000);
         editTreePage.clicktoExpandAll();
-        editTreePage.clickatfirstLevel();
+        editTreePage.clickatLevel(0);
         editTreePage.showAllunderBranch().then(function (text) {
             console.log(text);
             expect(text).toEqual('Show all under branch');
@@ -189,15 +236,48 @@ describe("Edit Tree page validations", function() {
         editTreePage.selectKPI();
         editTreePage.selectlistofMetrics();
         console.log("user can view products metrics");
+        editTreePage.totalSalesMetric().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('$ Total sales');
+        });
+        editTreePage.kpiDivData.then(function (text) {
+            console.log(text);
+            expect(text).toEqual('$');
+        });
+        console.log("The Total Sales are displayed in the local currency")
     });
     /*CDT-16:Validate that user can view unclassified products*/
+    /*CDT-79: Moving products in the Tree */
+    /*CDT-80: Selecting products for reclassification (declassification story) */
     it("Validate that user can view products metrics", function () {
         browser.sleep(3000);
         editTreePage.clicktoExpandAll();
+        editTreePage.clickatLevel(0);
+        editTreePage.showAllunderBranch().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('Show all under branch');
+        });
+        editTreePage.selectshowAllunderBranch();
+        editTreePage.selectProductHierarchy();
+        editTreePage.clickatLevel(4);
+        editTreePage.selectProductHierarchy();
         editTreePage.validateMove().then(function (text) {
             console.log(text);
             expect(text).toEqual('MOVE');
         });
+        editTreePage.clickMove();
+        editTreePage.validateCancel().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('CANCEL');
+        });
+        editTreePage.clickCancel();
+        editTreePage.clickMove();
+        editTreePage.goDown();
+        editTreePage.selectFolder();
+        editTreePage.validateMoveProductHere();
+        editTreePage.goUp();
+        editTreePage.selectFolder();
+        editTreePage.clickMoveProductHere();
         editTreePage.unclassifiedData();
         console.log("user can view products in unclassified products tabs");
     });
@@ -213,12 +293,22 @@ describe("Edit Tree page validations", function() {
         console.log("user can undo changes from last save and thn save the changes agian");
 
     });
-    /*CDT-42:Validate that user can Expand and Collapse and changeKPI " */
+    /*CDT-42:Validate that user can Expand and Collapse and changeKPI*/
+    /*CDT-147:Local currency -Change a KPI*/
     it("Validate that user can Expand and Collapse and changeKPI", function () {
         browser.sleep(2000);
         editTreePage.clicktoExpandAll();
         editTreePage.clickatChangeKPI();
         console.log("User can Expand and Collapse and changeKPI");
+        editTreePage.localCurrency().then(function (text) {
+            console.log(text);
+            expect(text).toEqual(' $ Sales ');
+        });
+        editTreePage.productData.then(function (text) {
+            console.log(text);
+            expect(text).toEqual('$');
+        });
+       console.log("The Sales are displayed in the local currency")
     });
 
     /*CDT-43:Validate that user can filter/view only levels marked as "higher need unit" */
@@ -234,11 +324,49 @@ describe("Edit Tree page validations", function() {
     it("Validate that user has ability to search Product", function () {
         browser.sleep(3000);
         editTreePage.clicktoExpandAll();
-        editTreePage.clickatfirstLevel();
+        editTreePage.clickatLevel(0);
         editTreePage.selectshowAllunderBranch();
         editTreePage.searchProduct();
         console.log("User can search Product and sort them");
     });
+    /*CDT-89:Viewing Products attributes  */
+    /*CDT-182: Viewing Products image */
+    /*CDT-147:Local currency - visible in Product attribute pop-up under Product image */
+    /*CDT-213:Close button */
+    it("Validate the Product attributes and image", function () {
+        browser.sleep(3000);
+        editTreePage.clicktoExpandAll();
+        editTreePage.clickatLevel(0);
+        editTreePage.showAllunderBranch().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('Show all under branch');
+        });
+        editTreePage.selectshowAllunderBranch();
+        editTreePage.clickatGivenProduct(2);
+        editTreePage.imageCaption().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('$');
+        });
+        console.log("The local currency is visible under the Product image ");
+        editTreePage.productName().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('Appletiser 750ml 750ML');
+        });
+        editTreePage.productCode().then(function (text) {
+            console.log(text);
+            expect(text).toEqual('319');
+        });
+        editTreePage.attrubuteLabel.then(function (text) {
+            console.log(text);
+            //expect(text).toEqual('319');
+        });
+        editTreePage.rightClick();
+        editTreePage.clickCloseIcon();
+        editTreePage.clickoKButton.then(function (text) {
+            console.log("The Product attribute pop-up ic closed ");
+        });
 
+
+    });
 });
 
