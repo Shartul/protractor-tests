@@ -1,8 +1,7 @@
 
 var BasePage = function() {
 
-    this.url = 'http://answersdev.nielsen.com/';
-
+    this.url = 'https://answersdev.nielsen.com';     ;// 'https://dc2.answersqc.nielsen.com/cdt/ui/';
     this.at = function() {
         return browser.wait(this.pageLoaded(), this.timeout.xl);
     };
@@ -135,7 +134,7 @@ var BasePage = function() {
         var name = value;
         var isStringPresent = function (string) {
             return String(string).match(name);
-        }
+        };
         var test = function (string) {
             if (isStringPresent(string)) {
                 flag = true;
@@ -144,7 +143,7 @@ var BasePage = function() {
                 flag = true;
                 return String('-');
             }
-        }
+        };
         var newArray = array.map(test);
         console.log(newArray.toString().match(value));
         return flag;
@@ -252,5 +251,5 @@ var BasePage = function() {
     };
 
 
-}
+};
 module.exports = new BasePage();
